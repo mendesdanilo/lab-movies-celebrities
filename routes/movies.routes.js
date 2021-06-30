@@ -25,4 +25,16 @@ router.post("/movies/create", async (req, res) => {
         res.redirect("/movies");
   });
 
+  //Gets the detail of movie
+router.get("/movies/:id", async (req, res) => {
+    const movieDetail = await Movie.findById(req.params.id).populate("cast");
+    res.render("movies/movie-details", { movieDetail });
+  });
+
+  router.post("/movies/:movieId/delete", async (req, res) => {
+    await Movie.findByIdAndRemove(req.params.movieId);
+    res.redirect("/movies");
+  });
+
+
 module.exports = router;
