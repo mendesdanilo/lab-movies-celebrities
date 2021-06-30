@@ -37,4 +37,23 @@ router.get("/movies/:id", async (req, res) => {
   });
 
 
+  //Edit movie 
+router.get("/movies/:movieId/edit", async (req, res) => {
+    const movieToEdit = await Movie.findById(req.params.movieId).populate("celebrities");
+  
+    res.render("movies/movie-edit", { movieToEdit });
+  });
+  
+  router.post("/movies/:movieId/edit", async (req, res) => {
+    const { title, genre, plot, cast } = req.body;
+    await Movie.findByIdAndUpdate(req.params.movieId, {
+      title,
+      genre,
+      plot,
+      cast,
+    });
+    res.redirect("/movies");
+  });
+
+
 module.exports = router;
